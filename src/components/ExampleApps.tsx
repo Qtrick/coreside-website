@@ -4,6 +4,8 @@ import { Check, Flame } from 'lucide-react';
 import { Reveal } from '@/components/site/Reveal';
 import type { ExampleAppId } from '@/types';
 import { motionTokens } from '@/lib/motion-tokens';
+import { ProductStage } from '@/components/marketing/ProductStage';
+import { DesktopWindow } from '@/components/marketing/DesktopWindow';
 
 export const ExampleApps: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ExampleAppId>('planner');
@@ -134,29 +136,30 @@ export const ExampleApps: React.FC = () => {
           </div>
         </div>
 
-        {/* Contained Preview Window with smooth height stabilization */}
-        <Reveal variant="scale-in" className="max-w-3xl mx-auto">
-          <div className="rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-lg overflow-hidden min-h-[460px] flex flex-col justify-between">
-            {/* Header Bar */}
-            <div className="h-10 px-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/60 flex items-center justify-between text-xs text-neutral-500">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="w-2.5 h-2.5 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="ml-2 font-mono text-[11px] text-neutral-500">
-                  {activeTab === 'planner' && 'StudyPlanner.app'}
-                  {activeTab === 'habits' && 'HabitLedger.app'}
-                  {activeTab === 'checklist' && 'KnowledgeQuiz.app'}
+        {/* Contained Preview Window with smooth height stabilization inside ProductStage */}
+        <Reveal variant="scale-in" className="max-w-4xl mx-auto">
+          <ProductStage
+            variant={activeTab === 'planner' ? 'warm' : activeTab === 'habits' ? 'sage' : 'glacier'}
+            badge="Interactive Demonstration"
+            stagePadding="p-3 sm:p-6 md:p-8"
+          >
+            <DesktopWindow
+              title={
+                activeTab === 'planner'
+                  ? 'Study Planner — Coreside'
+                  : activeTab === 'habits'
+                  ? 'Habit Ledger — Coreside'
+                  : 'Knowledge Quiz — Coreside'
+              }
+              rightAccessory={
+                <span className="font-mono text-[10px] text-neutral-500 dark:text-neutral-400 px-2 py-0.5 rounded bg-neutral-200/60 dark:bg-neutral-800">
+                  Interactive sample
                 </span>
-              </div>
-              <span className="font-mono text-[10px] text-neutral-400">
-                Interactive sample
-              </span>
-            </div>
-
-            {/* Animated Tab Content Frame with AnimatePresence */}
-            <div className="flex-1 flex flex-col justify-between">
-              <AnimatePresence mode="wait">
+              }
+            >
+              {/* Animated Tab Content Frame with AnimatePresence */}
+              <div className="flex-1 flex flex-col justify-between min-h-[440px]">
+                <AnimatePresence mode="wait">
                 {activeTab === 'planner' && (
                   <motion.div
                     key="tab-planner"
@@ -389,13 +392,14 @@ export const ExampleApps: React.FC = () => {
               </AnimatePresence>
 
               {/* Bottom Designation */}
-              <div className="p-3.5 bg-neutral-50 dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between text-[11px] text-neutral-500 dark:text-neutral-400">
+              <div className="p-3.5 bg-neutral-50/80 dark:bg-neutral-950/60 border-t border-neutral-200/80 dark:border-neutral-800 flex items-center justify-between text-[11px] text-neutral-500 dark:text-neutral-400">
                 <span>Color accents remain inside the created app frame.</span>
                 <span className="font-mono text-[10px]">Illustrative preview</span>
               </div>
             </div>
-          </div>
-        </Reveal>
+          </DesktopWindow>
+        </ProductStage>
+      </Reveal>
       </div>
     </section>
   );

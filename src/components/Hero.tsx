@@ -5,6 +5,7 @@ import { WaitlistForm } from './WaitlistForm';
 import { motionTokens } from '@/lib/motion-tokens';
 
 import { HeroDotField } from '@/components/site/HeroDotField';
+import { DesktopWindow } from '@/components/marketing/DesktopWindow';
 
 interface TaskItem {
   id: string;
@@ -126,20 +127,9 @@ export const Hero: React.FC = () => {
           transition={{ duration: motionTokens.duration.slow, delay: 0.4, ease: motionTokens.easing.smooth }}
           className="scroll-mt-24 max-w-5xl mx-auto"
         >
-          <div className="rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl overflow-hidden transition-all">
-            {/* Window Title Bar */}
-            <div className="h-11 px-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/60 flex items-center justify-between">
-              {/* Traffic Lights */}
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="w-3 h-3 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="w-3 h-3 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <span className="ml-2 text-xs font-mono text-neutral-500 dark:text-neutral-400 hidden sm:inline">
-                  Coreside: Personal Workspace
-                </span>
-              </div>
-
-              {/* Step indicator and playback controls */}
+          <DesktopWindow
+            title="Coreside: Personal Workspace"
+            rightAccessory={
               <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                 <span className="font-mono text-[11px] hidden md:inline">
                   {step === 1 && '1. Describing need'}
@@ -170,7 +160,8 @@ export const Hero: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            }
+          >
 
             {/* Split Window Workspace: Chat Stream on Left, Live App Canvas on Right */}
             <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px]">
@@ -379,7 +370,7 @@ export const Hero: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </DesktopWindow>
 
           {/* Step selector pills underneath demo */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">

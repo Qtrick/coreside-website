@@ -14,7 +14,7 @@ export const FAQ: React.FC = () => {
       id: 'faq-1',
       question: 'What is Coreside?',
       answer:
-        'Coreside is a consumer-first personal software environment for your desktop. Rather than giving you disposable text responses, it turns conversational requests into interactive personal applications that live right inside your workspace.',
+        'Coreside is a personal software environment for your desktop. Rather than giving you disposable text responses, it turns conversational requests into interactive personal applications that live right inside your workspace.',
     },
     {
       id: 'faq-2',
@@ -79,45 +79,51 @@ export const FAQ: React.FC = () => {
   return (
     <section id="faq" className="py-20 md:py-28 border-t border-neutral-200 dark:border-neutral-850 scroll-mt-16">
       <div className="max-w-site mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mx-auto text-center space-y-4 mb-16">
-          <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-            Frequently Asked Questions
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-950 dark:text-white">
-            Clear, honest answers.
-          </h2>
-          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
-            Everything you need to know about the product, architecture, and early-access rollout.
-          </p>
-        </Reveal>
+        {/* Asymmetric Editorial Grid: Left Sticky Column + Right Spacious Accordion */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Left Column: Editorial Summary */}
+          <Reveal className="lg:col-span-5 lg:sticky lg:top-28 space-y-4">
+            <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              Questions & Answers
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-950 dark:text-white leading-[1.15]">
+              Clear, honest answers.
+            </h2>
+            <p className="text-base text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed max-w-md">
+              Everything you need to know about the product, local persistence, safety boundaries, and early-access rollout.
+            </p>
 
-        {/* Accordion container */}
-        <div className="max-w-3xl mx-auto space-y-3">
-          {faqs.map((faq, idx) => {
-            const isOpen = openId === faq.id;
-            const contentId = `${faq.id}-content`;
-            const headerId = `${faq.id}-header`;
+            <div className="pt-4 border-t border-neutral-200/80 dark:border-neutral-800/80 text-xs text-neutral-500 space-y-2">
+              <p>Have an unlisted question? Reach our team directly during early access enrollment.</p>
+            </div>
+          </Reveal>
 
-            return (
-              <Reveal key={faq.id} delay={idx * 0.03}>
-                <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 overflow-hidden transition-colors shadow-2xs">
+          {/* Right Column: Clean Divided Accordion (No Heavy Repeating Pill Borders) */}
+          <div className="lg:col-span-7 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/40 divide-y divide-neutral-200/70 dark:divide-neutral-800/70 shadow-2xs overflow-hidden">
+            {faqs.map((faq) => {
+              const isOpen = openId === faq.id;
+              const contentId = `${faq.id}-content`;
+              const headerId = `${faq.id}-header`;
+
+              return (
+                <div key={faq.id} className="transition-colors hover:bg-neutral-50/50 dark:hover:bg-neutral-850/20">
                   <button
                     type="button"
                     id={headerId}
                     aria-expanded={isOpen}
                     aria-controls={contentId}
                     onClick={() => toggleItem(faq.id)}
-                    className="w-full py-4.5 px-6 flex items-center justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer"
+                    className="w-full py-5 px-6 sm:px-7 flex items-center justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer min-h-[64px]"
                   >
-                    <span className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100 pr-4">
+                    <span className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100 pr-6 leading-snug">
                       {faq.question}
                     </span>
                     <motion.div
                       animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: motionTokens.duration.fast }}
-                      className="shrink-0"
+                      transition={{ duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }}
+                      className="shrink-0 w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-500 transition-colors"
                     >
-                      <ChevronDown className="w-4 h-4 text-neutral-500" />
+                      <ChevronDown className="w-3.5 h-3.5" />
                     </motion.div>
                   </button>
 
@@ -131,18 +137,18 @@ export const FAQ: React.FC = () => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
                         transition={{ duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }}
-                        className="overflow-hidden border-t border-neutral-100 dark:border-neutral-850"
+                        className="overflow-hidden bg-neutral-50/30 dark:bg-neutral-950/20"
                       >
-                        <div className="px-6 pb-5 pt-3 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                        <div className="px-6 sm:px-7 pb-6 pt-1 text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-prose">
                           {faq.answer}
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-              </Reveal>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
