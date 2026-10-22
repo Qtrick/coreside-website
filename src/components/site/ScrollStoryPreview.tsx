@@ -271,9 +271,9 @@ export const ScrollStoryPreview: React.FC<ScrollStoryPreviewProps> = ({
 
   return (
     <ProductStage
-      variant="glacier"
+      variant="aurora-pearl"
       badge="Desktop Preview"
-      stagePadding="p-3 sm:p-5 md:p-6"
+      stagePadding="p-3 sm:p-5 md:p-6 lg:p-7"
       className={className}
     >
       <DesktopWindow

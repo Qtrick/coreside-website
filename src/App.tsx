@@ -55,12 +55,12 @@ export const App: React.FC = () => {
       {currentPath === '/privacy' ? (
         <PrivacyPage />
       ) : currentPath === '/' ? (
-        <div className="flex flex-col min-h-screen relative">
-          <Header />
-          <main id="main-content" className="flex-1">
-            <Hero />
-            <div className="relative">
-              <SiteAmbientBackground />
+        <div className="relative isolate min-h-screen flex flex-col">
+          <SiteAmbientBackground />
+          <div className="relative z-10 flex flex-col flex-1">
+            <Header />
+            <main id="main-content" className="flex-1">
+              <Hero />
               <WhyCoreside />
               <ScrollStory />
               <ExampleApps />
@@ -70,9 +70,9 @@ export const App: React.FC = () => {
               <WhoItsFor />
               <FAQ />
               <WaitlistSection />
-            </div>
-          </main>
-          <Footer />
+            </main>
+            <Footer />
+          </div>
         </div>
       ) : (
         <NotFoundPage />

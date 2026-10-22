@@ -23,9 +23,9 @@ export const PersistenceStory: React.FC = () => {
         {/* Side-by-Side Comparison framed inside Warm ProductStage */}
         <Reveal variant="scale-in" className="max-w-5xl mx-auto">
           <ProductStage
-            variant="warm"
+            variant="apricot-dusk"
             badge="Continuity Demonstration"
-            stagePadding="p-4 sm:p-6 md:p-8"
+            stagePadding="p-4 sm:p-6 md:p-8 lg:p-9"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
               {/* Window 1: Initial App (v1.0) */}

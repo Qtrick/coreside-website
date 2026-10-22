@@ -5,6 +5,7 @@ import { WaitlistForm } from './WaitlistForm';
 import { motionTokens } from '@/lib/motion-tokens';
 
 import { HeroDotField } from '@/components/site/HeroDotField';
+import { ProductStage } from '@/components/marketing/ProductStage';
 import { DesktopWindow } from '@/components/marketing/DesktopWindow';
 
 interface TaskItem {
@@ -127,7 +128,12 @@ export const Hero: React.FC = () => {
           transition={{ duration: motionTokens.duration.slow, delay: 0.4, ease: motionTokens.easing.smooth }}
           className="scroll-mt-24 max-w-5xl mx-auto"
         >
-          <DesktopWindow
+          <ProductStage
+            variant="aurora-pearl"
+            badge="Desktop Workspace"
+            stagePadding="p-3 sm:p-5 md:p-6 lg:p-7"
+          >
+            <DesktopWindow
             title="Coreside: Personal Workspace"
             rightAccessory={
               <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
@@ -371,6 +377,7 @@ export const Hero: React.FC = () => {
               </div>
             </div>
           </DesktopWindow>
+          </ProductStage>
 
           {/* Step selector pills underneath demo */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">

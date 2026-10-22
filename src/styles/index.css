@@ -61,6 +61,48 @@
   outline-offset: 2px;
 }
 
+/* View Transition API - Circular AOE Theme Wipe */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Gentle atmospheric stage breathing */
+@keyframes stageDrift {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(5px, -6px) scale(1.02);
+  }
+}
+
+@keyframes stageDriftReverse {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(-5px, 6px) scale(1.02);
+  }
+}
+
+.animate-stage-drift {
+  animation: stageDrift 14s ease-in-out infinite;
+}
+
+.animate-stage-drift-reverse {
+  animation: stageDriftReverse 16s ease-in-out infinite;
+}
+
 /* Reduced motion preference respect */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -70,5 +112,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

@@ -1,82 +1,126 @@
 import React from 'react';
 
-export const SiteAmbientBackground: React.FC = () => {
+interface SiteAmbientBackgroundProps {
+  className?: string;
+}
+
+/**
+ * SiteAmbientBackground provides a persistent, quiet, neutral atmospheric contour
+ * and tactile grain depth behind the non-hero narrative across all sections.
+ *
+ * Uses viewport-fixed positioning with preserveAspectRatio="xMidYMid slice" to ensure
+ * lines never stretch or distort on tall pages, with contrast calibrated for both
+ * light and dark modes.
+ */
+export const SiteAmbientBackground: React.FC<SiteAmbientBackgroundProps> = ({ className = '' }) => {
   return (
     <div
-      className="absolute inset-0 pointer-events-none -z-10 overflow-hidden"
+      className={`fixed inset-0 pointer-events-none z-0 overflow-hidden ${className}`}
       aria-hidden="true"
     >
-      {/* Subtle organic hairline contour curves */}
+      {/* 1. Subtle Organic Contour Linework (Topographic sweeps) */}
       <svg
-        className="w-full h-full text-neutral-900/[0.025] dark:text-white/[0.028] transition-colors duration-300"
+        className="absolute inset-0 w-full h-full text-neutral-950 dark:text-white transition-colors duration-500"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid slice"
         viewBox="0 0 1440 900"
       >
-        {/* Upper right gentle sweep */}
+        {/* Top-Right sweep cluster */}
         <path
-          d="M 900 -50 C 1100 120 1280 260 1500 380"
+          d="M 880 -40 C 1060 140 1240 280 1480 390"
           stroke="currentColor"
-          strokeWidth="1"
+          strokeWidth="1.2"
+          className="opacity-[0.075] dark:opacity-[0.08]"
           vectorEffect="non-scaling-stroke"
         />
         <path
-          d="M 960 -60 C 1140 160 1320 320 1520 460"
+          d="M 940 -50 C 1110 170 1280 330 1510 470"
+          stroke="currentColor"
+          strokeWidth="0.9"
+          strokeDasharray="4 8"
+          className="opacity-[0.05] dark:opacity-[0.055]"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M 820 -20 C 1020 200 1190 360 1440 540"
           stroke="currentColor"
           strokeWidth="0.8"
-          strokeDasharray="4 8"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path
-          d="M 840 -30 C 1050 180 1220 340 1460 520"
-          stroke="currentColor"
-          strokeWidth="0.75"
+          className="opacity-[0.06] dark:opacity-[0.07]"
           vectorEffect="non-scaling-stroke"
         />
 
-        {/* Mid-left organic contour */}
+        {/* Mid-Left organic contours */}
         <path
-          d="M -50 350 C 220 420 380 560 480 820"
+          d="M -40 320 C 240 390 410 540 500 820"
           stroke="currentColor"
-          strokeWidth="1"
+          strokeWidth="1.1"
+          className="opacity-[0.07] dark:opacity-[0.075]"
           vectorEffect="non-scaling-stroke"
         />
         <path
-          d="M -60 420 C 180 490 320 640 420 920"
-          stroke="currentColor"
-          strokeWidth="0.75"
-          strokeDasharray="3 6"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path
-          d="M -80 280 C 260 360 420 500 540 760"
+          d="M -60 390 C 190 460 350 620 440 920"
           stroke="currentColor"
           strokeWidth="0.85"
+          strokeDasharray="3 7"
+          className="opacity-[0.045] dark:opacity-[0.05]"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M -70 250 C 270 330 450 480 570 760"
+          stroke="currentColor"
+          strokeWidth="0.8"
+          className="opacity-[0.055] dark:opacity-[0.06]"
           vectorEffect="non-scaling-stroke"
         />
 
-        {/* Lower right topographic curve */}
+        {/* Bottom-Right topographic curve */}
         <path
-          d="M 820 920 C 1040 760 1260 700 1520 740"
+          d="M 780 940 C 1010 770 1240 710 1520 750"
           stroke="currentColor"
-          strokeWidth="1"
+          strokeWidth="1.1"
+          className="opacity-[0.07] dark:opacity-[0.075]"
           vectorEffect="non-scaling-stroke"
         />
         <path
-          d="M 760 950 C 990 810 1200 760 1480 810"
+          d="M 720 970 C 960 820 1180 770 1480 820"
+          stroke="currentColor"
+          strokeWidth="0.85"
+          strokeDasharray="4 8"
+          className="opacity-[0.05] dark:opacity-[0.055]"
+          vectorEffect="non-scaling-stroke"
+        />
+
+        {/* Diagonal soft guide line across mid-page */}
+        <path
+          d="M 150 960 C 480 720 840 540 1350 480"
           stroke="currentColor"
           strokeWidth="0.75"
+          className="opacity-[0.045] dark:opacity-[0.05]"
           vectorEffect="non-scaling-stroke"
         />
       </svg>
 
-      {/* Very faint, tactile fine grain overlay */}
+      {/* 2. Peripheral Atmospheric Neutral Depth Pools (No bright neon spotlights) */}
+      <div
+        className="absolute top-0 right-0 w-[55vw] h-[55vh] rounded-full blur-3xl pointer-events-none opacity-[0.035] dark:opacity-[0.04] bg-neutral-900 dark:bg-white transition-opacity"
+        style={{
+          background: 'radial-gradient(circle at 80% 20%, currentColor 0%, transparent 70%)',
+        }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[50vw] h-[50vh] rounded-full blur-3xl pointer-events-none opacity-[0.03] dark:opacity-[0.035] bg-neutral-900 dark:bg-white transition-opacity"
+        style={{
+          background: 'radial-gradient(circle at 20% 80%, currentColor 0%, transparent 70%)',
+        }}
+      />
+
+      {/* 3. Tactile Fine Grain Texture Overlay */}
       <svg
-        className="absolute inset-0 w-full h-full opacity-[0.022] dark:opacity-[0.035] mix-blend-overlay"
+        className="absolute inset-0 w-full h-full opacity-[0.04] dark:opacity-[0.055] mix-blend-multiply dark:mix-blend-screen pointer-events-none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <filter id="site-ambient-grain">
+        <filter id="site-ambient-grain-v4">
           <feTurbulence
             type="fractalNoise"
             baseFrequency="0.75"
@@ -85,7 +129,7 @@ export const SiteAmbientBackground: React.FC = () => {
           />
           <feColorMatrix type="saturate" values="0" />
         </filter>
-        <rect width="100%" height="100%" filter="url(#site-ambient-grain)" />
+        <rect width="100%" height="100%" filter="url(#site-ambient-grain-v4)" />
       </svg>
     </div>
   );

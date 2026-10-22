@@ -19,7 +19,7 @@ const APPEARANCE_PRESETS: Record<PresetId, AppearancePreset> = {
   paper: {
     id: 'paper',
     name: 'Paper Clean',
-    stageVariant: 'warm',
+    stageVariant: 'apricot-dusk',
     description: 'Minimal high-contrast layout with pure neutral borders and quiet surfaces.',
     wallpaperGlowLight: 'bg-gradient-to-br from-[#faf7f5] to-[#f0e9e4]',
     wallpaperGlowDark: 'bg-gradient-to-br from-[#121215] to-[#0a0a0c]',
@@ -27,7 +27,7 @@ const APPEARANCE_PRESETS: Record<PresetId, AppearancePreset> = {
   aurora: {
     id: 'aurora',
     name: 'Aurora Atmosphere',
-    stageVariant: 'aurora',
+    stageVariant: 'aurora-pearl',
     description: 'Atmospheric desktop wallpaper with northern-lights ambient glow and translucent panels.',
     wallpaperGlowLight: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-200/50 via-emerald-100/30 to-[#f4f7f6]',
     wallpaperGlowDark: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/40 via-emerald-950/20 to-[#080c10]',
@@ -35,7 +35,7 @@ const APPEARANCE_PRESETS: Record<PresetId, AppearancePreset> = {
   midnight: {
     id: 'midnight',
     name: 'Midnight Ink',
-    stageVariant: 'midnight',
+    stageVariant: 'mineral-night',
     description: 'Deep cobalt obsidian surfaces with illuminated edge highlights.',
     wallpaperGlowLight: 'bg-gradient-to-br from-[#eaf0f8] via-[#e2ebf5] to-[#edf3f9]',
     wallpaperGlowDark: 'bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-950/50 via-slate-950 to-[#05070a]',

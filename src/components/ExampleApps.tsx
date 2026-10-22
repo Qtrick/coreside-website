@@ -139,9 +139,9 @@ export const ExampleApps: React.FC = () => {
         {/* Contained Preview Window with smooth height stabilization inside ProductStage */}
         <Reveal variant="scale-in" className="max-w-4xl mx-auto">
           <ProductStage
-            variant={activeTab === 'planner' ? 'warm' : activeTab === 'habits' ? 'sage' : 'glacier'}
+            variant={activeTab === 'planner' ? 'aurora-pearl' : activeTab === 'habits' ? 'apricot-dusk' : 'mineral-night'}
             badge="Interactive Demonstration"
-            stagePadding="p-3 sm:p-6 md:p-8"
+            stagePadding="p-4 sm:p-6 md:p-8 lg:p-9"
           >
             <DesktopWindow
               title={
