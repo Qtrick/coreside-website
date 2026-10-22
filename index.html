@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coreside: Software that takes shape around you</title>
+    <meta
+      name="description"
+      content="Coreside is an AI-native personal software workspace for desktop. Build personal apps right inside your workspace, then keep changing them as your needs change."
+    />
+    <meta name="keywords" content="personal software, AI workspace, desktop apps, study planner, habit tracker, custom personal software" />
+    <meta name="author" content="Coreside" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Coreside" />
+    <meta property="og:title" content="Coreside: Software that takes shape around you" />
+    <meta
+      property="og:description"
+      content="Tell Coreside what you need. Build personal apps right inside your workspace, then keep changing them as your needs change."
+    />
+    <meta property="og:image" content="/branding/coreside-dock-dark.png" />
+    <meta property="og:image:alt" content="Coreside Mark" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coreside: Software that takes shape around you" />
+    <meta
+      name="twitter:description"
+      content="Tell Coreside what you need. Build personal apps right inside your workspace, then keep changing them as your needs change."
+    />
+    <meta name="twitter:image" content="/branding/coreside-dock-dark.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/branding/coreside-dock-dark.png" />
+    <link rel="apple-touch-icon" href="/branding/coreside-dock-dark.png" />
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Theme Flash Prevention Script -->
+    <script>
+      (function() {
+        try {
+          const stored = localStorage.getItem('coreside-theme');
+          const isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 antialiased selection:bg-neutral-800 selection:text-white transition-colors duration-200 min-h-screen">
+    <!-- Skip to main content link for screen reader and keyboard accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-neutral-900 focus:text-white focus:outline-none focus:ring-2 focus:ring-white rounded-md text-sm font-medium"
+    >
+      Skip to main content
+    </a>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

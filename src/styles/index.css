@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page: #ffffff;
+    --bg-raised: #fafafa;
+    --bg-card: #ffffff;
+    --border-subtle: #e4e4e7;
+    --border-strong: #d4d4d8;
+    --text-primary: #09090b;
+    --text-muted: #71717a;
+    --text-faint: #a1a1aa;
+    --focus-ring: #18181b;
+  }
+
+  .dark {
+    --bg-page: #080808;
+    --bg-raised: #121212;
+    --bg-card: #18181b;
+    --border-subtle: #27272a;
+    --border-strong: #3f3f46;
+    --text-primary: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --text-faint: #71717a;
+    --focus-ring: #f4f4f5;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Subtle border line utility */
+  .border-divider {
+    border-color: var(--border-subtle);
+  }
+
+  /* Micro-dot grid background for hero preview window */
+  .bg-grid-pattern {
+    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+  }
+
+  .dark .bg-grid-pattern {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  }
+}
+
+/* Accessible focus outline */
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Reduced motion preference respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

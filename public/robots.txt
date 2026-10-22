@@ -1,0 +1,6 @@
+# Coreside Robots Configuration
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://coreside.app/sitemap.xml

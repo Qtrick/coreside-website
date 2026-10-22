@@ -1,0 +1,168 @@
+import React, { useState } from 'react';
+import { Palette, Moon, Sun } from 'lucide-react';
+
+export const Personalization: React.FC = () => {
+  const [workspaceMode, setWorkspaceMode] = useState<'dark' | 'light'>('dark');
+
+  return (
+    <section className="py-20 md:py-28 border-t border-neutral-200 dark:border-neutral-850 bg-neutral-50/50 dark:bg-neutral-950/50">
+      <div className="max-w-site mx-auto px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto text-center space-y-4 mb-16">
+          <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Appearance
+          </p>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-950 dark:text-white">
+            Make the space yours.
+          </h2>
+          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
+            Customize your personal workspace with tailored light and dark themes, clean typography, and quiet desktop wallpapers.
+          </p>
+        </div>
+
+        {/* Interactive In-App Theme & Wallpaper Preview */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {/* Controls to toggle in-product preview mode */}
+          <div className="flex items-center justify-between pb-2">
+            <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+              Desktop Workspace Preview
+            </span>
+            <div className="flex items-center gap-1.5 p-1 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+              <button
+                type="button"
+                onClick={() => setWorkspaceMode('dark')}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                  workspaceMode === 'dark'
+                    ? 'bg-neutral-900 text-white dark:bg-neutral-800 dark:text-neutral-100 shadow-2xs'
+                    : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+                }`}
+              >
+                <Moon className="w-3.5 h-3.5" />
+                <span>Dark</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setWorkspaceMode('light')}
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                  workspaceMode === 'light'
+                    ? 'bg-neutral-200 text-neutral-900 shadow-2xs font-semibold'
+                    : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+                }`}
+              >
+                <Sun className="w-3.5 h-3.5" />
+                <span>Light</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop App Mockup Frame */}
+          <div
+            className={`rounded-2xl border transition-colors duration-300 shadow-xl overflow-hidden ${
+              workspaceMode === 'dark'
+                ? 'border-neutral-800 bg-neutral-950 text-neutral-100'
+                : 'border-neutral-300 bg-white text-neutral-900'
+            }`}
+          >
+            {/* Title Bar */}
+            <div
+              className={`h-10 px-4 border-b flex items-center justify-between text-xs ${
+                workspaceMode === 'dark'
+                  ? 'border-neutral-800 bg-neutral-900/80 text-neutral-400'
+                  : 'border-neutral-200 bg-neutral-100/90 text-neutral-600'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-neutral-400/60" />
+                <span className="w-2.5 h-2.5 rounded-full bg-neutral-400/60" />
+                <span className="w-2.5 h-2.5 rounded-full bg-neutral-400/60" />
+                <span className="ml-2 font-mono text-[11px]">
+                  Coreside: Workspace Appearance ({workspaceMode})
+                </span>
+              </div>
+              <span className="text-[10px] font-mono">Follows macOS & Custom Modes</span>
+            </div>
+
+            {/* In-app workspace canvas */}
+            <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Workspace Settings panel */}
+              <div
+                className={`p-4 rounded-xl border space-y-3 ${
+                  workspaceMode === 'dark'
+                    ? 'border-neutral-850 bg-neutral-900/60'
+                    : 'border-neutral-200 bg-neutral-50'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <Palette className="w-4 h-4 text-neutral-500" />
+                  <span className="text-xs font-semibold">Appearance</span>
+                </div>
+                <div className="space-y-1.5 text-xs text-neutral-500">
+                  <div className="flex justify-between py-1 border-b border-neutral-200 dark:border-neutral-800">
+                    <span>Theme</span>
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200 capitalize">{workspaceMode}</span>
+                  </div>
+                  <div className="flex justify-between py-1 border-b border-neutral-200 dark:border-neutral-800">
+                    <span>Wallpapers</span>
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200">Subtle Slate</span>
+                  </div>
+                  <div className="flex justify-between py-1">
+                    <span>Dock Tile</span>
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200">Adaptive</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sample personal app cards inside the mockup */}
+              <div
+                className={`md:col-span-2 p-5 rounded-xl border space-y-4 ${
+                  workspaceMode === 'dark'
+                    ? 'border-neutral-850 bg-neutral-900/60'
+                    : 'border-neutral-200 bg-neutral-50'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold tracking-tight uppercase">
+                    Personalized Workspace Layout
+                  </h4>
+                  <span className="text-[10px] font-mono text-neutral-400">
+                    Protected Core Active
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div
+                    className={`p-3.5 rounded-lg border ${
+                      workspaceMode === 'dark'
+                        ? 'border-neutral-800 bg-neutral-950'
+                        : 'border-neutral-200 bg-white'
+                    }`}
+                  >
+                    <p className="font-medium">Focus Checkpoints</p>
+                    <p className="text-[11px] text-neutral-500 mt-1">
+                      Custom checklist pinned to morning routine
+                    </p>
+                  </div>
+                  <div
+                    className={`p-3.5 rounded-lg border ${
+                      workspaceMode === 'dark'
+                        ? 'border-neutral-800 bg-neutral-950'
+                        : 'border-neutral-200 bg-white'
+                    }`}
+                  >
+                    <p className="font-medium">Research Log</p>
+                    <p className="text-[11px] text-neutral-500 mt-1">
+                      Saved web citations and synthesis notes
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+                  While personal app layouts, backgrounds, and themes adapt to your taste, Coreside's core security boundary and branding remain trusted and protected.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
