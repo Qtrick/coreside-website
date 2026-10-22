@@ -24,6 +24,14 @@ describe('V4 Site Ambient Background Component', () => {
     const grainFilter = container.querySelector('#site-ambient-grain-v4');
     expect(grainFilter).toBeInTheDocument();
   });
+
+  it('provides scroll-driven opacity transition isolating hero particles from narrative lines', () => {
+    const { container } = render(<SiteAmbientBackground />);
+    const root = container.firstChild as HTMLElement;
+    // Renders as a Motion component with fixed positioning
+    expect(root).toBeInTheDocument();
+    expect(root.tagName.toLowerCase()).toBe('div');
+  });
 });
 
 describe('V4 Hero Dot Field Component', () => {

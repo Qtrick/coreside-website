@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
 
 interface SiteAmbientBackgroundProps {
   className?: string;
@@ -8,13 +9,34 @@ interface SiteAmbientBackgroundProps {
  * SiteAmbientBackground provides a persistent, quiet, neutral atmospheric contour
  * and tactile grain depth behind the non-hero narrative across all sections.
  *
+ * Implements a smooth scroll-driven transition:
+ * - Hidden (opacity 0) in the hero area where the interactive particle field is active.
+ * - Smoothly animates and fades in (0 -> 1) as the user scrolls past the hero into the narrative.
+ * - Smoothly reverses and fades back out (1 -> 0) when scrolling back up to the hero.
+ *
  * Uses viewport-fixed positioning with preserveAspectRatio="xMidYMid slice" to ensure
  * lines never stretch or distort on tall pages, with contrast calibrated for both
  * light and dark modes.
  */
 export const SiteAmbientBackground: React.FC<SiteAmbientBackgroundProps> = ({ className = '' }) => {
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollY } = useScroll();
+
+  // Smooth scroll-driven animation / transition:
+  // - 0px to 140px: opacity 0 (completely hidden where interactive particles are active in Hero)
+  // - 140px to 540px: smoothly animates opacity from 0 to 1, with gentle upward parallax float
+  // - 540px+: opacity 1 (fully visible for all non-hero sections)
+  // - When scrolling back up, smoothly transitions back from 1 to 0!
+  const scrollOpacity = useTransform(scrollY, [140, 540], [0, 1]);
+  const scrollTranslateY = useTransform(scrollY, [140, 540], [20, 0]);
+
   return (
-    <div
+    <motion.div
+      style={
+        shouldReduceMotion
+          ? { opacity: 1 }
+          : { opacity: scrollOpacity, y: scrollTranslateY }
+      }
       className={`fixed inset-0 pointer-events-none z-0 overflow-hidden ${className}`}
       aria-hidden="true"
     >
@@ -131,6 +153,6 @@ export const SiteAmbientBackground: React.FC<SiteAmbientBackgroundProps> = ({ cl
         </filter>
         <rect width="100%" height="100%" filter="url(#site-ambient-grain-v4)" />
       </svg>
-    </div>
+    </motion.div>
   );
 };

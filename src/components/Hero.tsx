@@ -63,10 +63,31 @@ export const Hero: React.FC = () => {
 
   return (
     <section ref={containerRef} className="relative pt-10 pb-20 md:pt-16 md:pb-24 overflow-hidden">
-      {/* Restrained Interactive Dot Field with Proximity & Ambient Wave */}
-      <HeroDotField />
+      {/* Solid background backing to ensure lines never bleed into the interactive particles */}
       <div
-        className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent pointer-events-none -z-10"
+        className="absolute inset-0 bg-white dark:bg-neutral-950 pointer-events-none -z-20 transition-colors duration-200"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 240px), transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 240px), transparent 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Restrained Interactive Dot Field with Proximity, Ambient Wave, and smooth bottom dissolve */}
+      <div
+        className="absolute inset-0 pointer-events-none -z-10"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 240px), transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black calc(100% - 240px), transparent 100%)',
+        }}
+        aria-hidden="true"
+      >
+        <HeroDotField />
+      </div>
+
+      {/* Smooth bottom transition bridge into the next narrative section */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-white/90 dark:to-neutral-950/90 pointer-events-none -z-10"
         aria-hidden="true"
       />
 
