@@ -22,17 +22,16 @@ describe('Theme System', () => {
     document.documentElement.className = '';
   });
 
-  it('initializes with system preference by default and syncs HTML dark class', () => {
+  it('initializes with light preference by default on first visit and syncs HTML class', () => {
     render(
       <ThemeProvider>
         <TestComponent />
       </ThemeProvider>
     );
 
-    expect(screen.getByTestId('pref').textContent).toBe('system');
-    // In our mock, matchMedia returns true for dark
-    expect(screen.getByTestId('resolved').textContent).toBe('dark');
-    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(screen.getByTestId('pref').textContent).toBe('light');
+    expect(screen.getByTestId('resolved').textContent).toBe('light');
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
   });
 
   it('allows manual light override and updates HTML class and localStorage', () => {
@@ -57,14 +56,14 @@ describe('Theme System', () => {
       </ThemeProvider>
     );
 
-    // Initial is dark -> toggle to light
-    fireEvent.click(screen.getByText('Toggle'));
-    expect(screen.getByTestId('resolved').textContent).toBe('light');
-    expect(document.documentElement.classList.contains('dark')).toBe(false);
-
-    // Toggle back to dark
+    // Initial is light -> toggle to dark
     fireEvent.click(screen.getByText('Toggle'));
     expect(screen.getByTestId('resolved').textContent).toBe('dark');
     expect(document.documentElement.classList.contains('dark')).toBe(true);
+
+    // Toggle back to light
+    fireEvent.click(screen.getByText('Toggle'));
+    expect(screen.getByTestId('resolved').textContent).toBe('light');
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
   });
 });

@@ -1,88 +1,106 @@
 import React from 'react';
-import { MessageSquareDashed, Database } from 'lucide-react';
+import { MessageSquareDashed, Sparkles, Check } from 'lucide-react';
 import { Reveal } from '@/components/site/Reveal';
 
 export const WhyCoreside: React.FC = () => {
   return (
-    <section className="py-20 md:py-28 border-t border-neutral-200 dark:border-neutral-850 bg-neutral-50/50 dark:bg-neutral-950/50 transition-colors">
+    <section className="py-20 md:py-28 border-t border-neutral-200 dark:border-neutral-850 relative">
       <div className="max-w-site mx-auto px-4 sm:px-6">
-        <Reveal className="max-w-2xl mx-auto text-center space-y-4 mb-16">
-          <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-            Why Coreside
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-neutral-950 dark:text-white">
-            Most software asks you to adapt. What if your apps adapted to you?
-          </h2>
-          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
-            Predefined apps rarely match how you actually think. Chat answers are often temporary. Coreside gives your ideas a permanent, evolving home.
-          </p>
-        </Reveal>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Editorial Thesis */}
+          <Reveal className="lg:col-span-5 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-200 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-900/70 text-neutral-800 dark:text-neutral-200 text-xs font-mono uppercase tracking-wider">
+              <span>Why Coreside</span>
+            </div>
 
-        {/* 2-Column Comparison Architecture with tactile hover effects */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Card 1: The standard friction */}
-          <Reveal delay={0.1} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-2xs hover:shadow-xs hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-200 space-y-5">
-              <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-600 dark:text-neutral-400">
-                <MessageSquareDashed className="w-5 h-5" />
-              </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-neutral-950 dark:text-white leading-[1.12]">
+              Most software asks you to adapt.
+            </h2>
 
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                Disposable answers and rigid tools
-              </h3>
+            <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
+              Standard tools force your work into rigid dashboards you can't reshape. Chat tools give you great answers, but the text vanishes the moment you close the tab.
+            </p>
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                Standard chatbots answer questions, but the output vanishes the moment you close the tab. Standard productivity software gives you complex dashboards that demand you change your workflow to fit their rules.
+            <div className="pt-2 border-l-2 border-neutral-900 dark:border-neutral-100 pl-4 space-y-1">
+              <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                Your software should adapt when your day does.
               </p>
-
-              <ul className="space-y-2.5 text-xs text-neutral-500 dark:text-neutral-400 pt-2 border-t border-neutral-100 dark:border-neutral-800">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
-                  Temporary chat threads that don't persist as software
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
-                  Inflexible templates you cannot easily modify without code
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
-                  Constant copy-pasting between disparate browser tabs
-                </li>
-              </ul>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                Coreside bridges conversational requests and persistent desktop apps.
+              </p>
             </div>
           </Reveal>
 
-          {/* Card 2: The Coreside solution */}
-          <Reveal delay={0.2} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-sm hover:shadow-md hover:border-neutral-400 dark:hover:border-neutral-600 transition-all duration-200 space-y-5 relative overflow-hidden">
-              <div className="w-10 h-10 rounded-xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 flex items-center justify-center">
-                <Database className="w-5 h-5" />
+          {/* Right Column: Grounded Comparison Architecture */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* The Friction */}
+            <Reveal delay={0.1}>
+              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-200 dark:border-neutral-850 bg-neutral-50/50 dark:bg-neutral-950/40 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-neutral-200/70 dark:bg-neutral-850 flex items-center justify-center text-neutral-600 dark:text-neutral-400">
+                    <MessageSquareDashed className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                    The Disposable Output Trap
+                  </h3>
+                </div>
+
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  You spend twenty minutes explaining a syllabus or personal habit system to an AI, only to get a markdown checklist you have to copy-paste somewhere else. Next week, you start from scratch.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs text-neutral-500 font-mono">
+                  <div className="p-2.5 rounded-lg border border-neutral-200/70 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                    Ephemeral chat logs
+                  </div>
+                  <div className="p-2.5 rounded-lg border border-neutral-200/70 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                    Unsaved data states
+                  </div>
+                  <div className="p-2.5 rounded-lg border border-neutral-200/70 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                    Copy-paste friction
+                  </div>
+                </div>
               </div>
+            </Reveal>
 
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-                Persistent apps built right in your space
-              </h3>
+            {/* The Coreside Model */}
+            <Reveal delay={0.2}>
+              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-sm space-y-4 relative overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-950 flex items-center justify-center">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                      The Coreside Workspace Model
+                    </h3>
+                  </div>
+                  <span className="text-[11px] font-mono font-medium px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                    Living software
+                  </span>
+                </div>
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                Coreside turns your conversational requests into structured, interactive applications. They live alongside your chats, store your data locally, and continue to change whenever you ask for updates.
-              </p>
+                <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  Your request compiles into an interactive, structured application that lives beside your conversations. It stores your notes and tasks on your computer and evolves whenever you ask for updates.
+                </p>
 
-              <ul className="space-y-2.5 text-xs text-neutral-700 dark:text-neutral-300 pt-2 border-t border-neutral-100 dark:border-neutral-800">
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-white" />
-                  Interactive apps rendered from declarative, verified components
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-white" />
-                  Local storage preserving your records across updates
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-white" />
-                  Transparent change proposals so you always see what changes
-                </li>
-              </ul>
-            </div>
-          </Reveal>
+                <ul className="space-y-2 pt-2 border-t border-neutral-100 dark:border-neutral-800 text-xs text-neutral-700 dark:text-neutral-300">
+                  <li className="flex items-center gap-2.5">
+                    <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-white shrink-0" />
+                    <span>Real interactive buttons, checkboxes, and progress indicators</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-white shrink-0" />
+                    <span>Existing records and tasks remain intact when adding new capabilities</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <Check className="w-3.5 h-3.5 text-neutral-950 dark:text-white shrink-0" />
+                    <span>All application state saved locally in SQLite on your desktop</span>
+                  </li>
+                </ul>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

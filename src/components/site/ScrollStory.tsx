@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useReducedMotion } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'motion/react';
 import { ScrollStoryPreview, type StoryTask } from './ScrollStoryPreview';
 import { Check, ArrowDown } from 'lucide-react';
 
@@ -10,7 +10,7 @@ const INITIAL_STORY_TASKS: StoryTask[] = [
   { id: 't-4', title: 'European Treaty Historical Analysis', subject: 'History', completed: false, priority: 'Normal' },
 ];
 
-interface SceneData {
+export interface SceneData {
   id: 1 | 2 | 3 | 4;
   num: string;
   concept: string;
@@ -20,57 +20,57 @@ interface SceneData {
   featureBullets: string[];
 }
 
-const SCENES: SceneData[] = [
+export const SCENES: SceneData[] = [
   {
     id: 1,
     num: '01',
-    concept: 'Start with a conversation.',
+    concept: 'Start with a conversation',
     title: 'Describe it.',
     caption: 'Tell Coreside what you need, in your own words.',
-    body: 'Describe a study planner, habit tracker, or project utility in ordinary language. You don\'t need to write code, configure database schemas, or adapt to a rigid template.',
+    body: 'Describe a study planner, habit tracker, or project utility in ordinary language. You don\'t need to write code, configure database schemas, or adapt to an inflexible template.',
     featureBullets: [
-      'Plain-language conversational prompt',
-      'No template locks or manual schema configuration',
-      'Instant intent analysis inside your desktop shell',
+      'Plain-language conversational requests',
+      'No rigid templates or manual schema setup',
+      'Clear illustrative preview before anything applies',
     ],
   },
   {
     id: 2,
     num: '02',
-    concept: 'An app, not just another answer.',
+    concept: 'An app, not just an answer',
     title: 'Watch it take shape.',
     caption: 'Coreside turns the request into an interactive app inside your workspace.',
-    body: 'Rather than outputting disposable text that disappears into scroll history, Coreside produces a structured change proposal. Review the proposed app, approve it with one click, and see it render from declarative components.',
+    body: 'Rather than outputting disposable text that disappears into scroll history, Coreside produces a structured change proposal. Review the proposed app, approve it, and see it take shape inside your space.',
     featureBullets: [
-      'Structured change proposal before anything applies',
-      'Validated declarative component tree',
-      'Isolated local SQLite persistence on your computer',
+      'Structured change proposals you approve first',
+      'Interactive desktop app rendered right in your workspace',
+      'Data stored safely on your computer',
     ],
   },
   {
     id: 3,
     num: '03',
-    concept: 'Keep changing it.',
+    concept: 'Keep changing it',
     title: 'Make it yours.',
     caption: 'Ask for priorities and a progress summary. Your existing tasks stay.',
-    body: 'When your needs change, you don\'t restart from an empty slate. Ask for follow-up additions in chat. Coreside modifies the app architecture while preserving every record and task value you entered.',
+    body: 'When your routines evolve, you don\'t start over. Ask for follow-up additions in conversation. Coreside modifies the app while keeping every task and record you already entered.',
     featureBullets: [
-      'Zero data loss during progressive app evolution',
-      'Add priority tags, filters, and progress bars smoothly',
-      'Clear visibility of newly slotted capabilities',
+      'Existing tasks and records stay completely intact',
+      'Slot in priority tags, progress bars, and filters',
+      'Clear visibility of newly added capabilities',
     ],
   },
   {
     id: 4,
     num: '04',
-    concept: 'It becomes part of your workspace.',
+    concept: 'Part of your workspace',
     title: 'Keep using it.',
     caption: 'Come back, check off a task, and build on what you already made.',
     body: 'Your created app lives directly beside your ongoing conversations and projects. Check off tasks, track daily streaks, and let your personal software grow alongside you.',
     featureBullets: [
       'Always accessible in your personal apps sidebar',
-      'Interactive controls respond immediately',
-      'Predictable desktop routines running while Coreside is open',
+      'Immediate interactive controls and live progress',
+      'Predictable desktop software that fits your day',
     ],
   },
 ];
@@ -78,10 +78,8 @@ const SCENES: SceneData[] = [
 export const ScrollStory: React.FC = () => {
   const [activeScene, setActiveScene] = useState<1 | 2 | 3 | 4>(1);
   const [tasks, setTasks] = useState<StoryTask[]>(INITIAL_STORY_TASKS);
+  const trackRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-
-  // Scene section references for IntersectionObserver
-  const sceneRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleToggleTask = (id: string) => {
     setTasks((prev) =>
@@ -89,162 +87,256 @@ export const ScrollStory: React.FC = () => {
     );
   };
 
+  // Scroll tracking on desktop bounded container
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start start', 'end end'],
+  });
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    let targetScene: 1 | 2 | 3 | 4 = 1;
+    if (latest < 0.25) targetScene = 1;
+    else if (latest < 0.50) targetScene = 2;
+    else if (latest < 0.75) targetScene = 3;
+    else targetScene = 4;
+
+    if (targetScene !== activeScene) {
+      setActiveScene(targetScene);
+    }
+  });
+
   const handleSelectScene = (sceneId: 1 | 2 | 3 | 4) => {
     setActiveScene(sceneId);
-    const targetEl = sceneRefs.current[sceneId - 1];
-    if (targetEl && typeof targetEl.scrollIntoView === 'function') {
-      targetEl.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth', block: 'center' });
+    if (!trackRef.current || typeof window === 'undefined') return;
+
+    const rect = trackRef.current.getBoundingClientRect();
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const trackTop = rect.top + scrollTop;
+    const scrollableHeight = trackRef.current.offsetHeight - window.innerHeight;
+
+    if (scrollableHeight > 0) {
+      // Center of scene's quadrant (0.125, 0.375, 0.625, 0.875)
+      const targetProgress = (sceneId - 0.5) / 4;
+      const targetY = trackTop + targetProgress * scrollableHeight;
+      window.scrollTo({
+        top: targetY,
+        behavior: shouldReduceMotion ? 'auto' : 'smooth',
+      });
     }
   };
 
-  // Set up scroll-driven scene observer on desktop
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    sceneRefs.current.forEach((el, index) => {
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveScene((index + 1) as 1 | 2 | 3 | 4);
-            }
-          });
-        },
-        {
-          root: null,
-          rootMargin: '-30% 0px -30% 0px', // Center-band trigger
-          threshold: 0.1,
-        }
-      );
-
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => {
-      observers.forEach((obs) => obs.disconnect());
-    };
-  }, []);
+  const currentScene = SCENES[activeScene - 1];
 
   return (
-    <section id="product" className="py-20 md:py-32 border-t border-neutral-200 dark:border-neutral-850 scroll-mt-16 relative">
-      <div className="max-w-site mx-auto px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="max-w-2xl mx-auto text-center space-y-4 mb-16 md:mb-24">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-200 text-xs font-mono uppercase tracking-wider">
-            <span>Product Walkthrough</span>
-          </div>
+    <section id="product" className="relative border-t border-neutral-200 dark:border-neutral-850 scroll-mt-16">
+      {/* Outer Scroll Track for Desktop Sticky Story */}
+      <div ref={trackRef} className="relative min-h-[100vh] lg:min-h-[320vh]">
+        {/* Sticky Viewport Stage (Desktop) */}
+        <div className="hidden lg:flex sticky top-16 md:top-20 z-10 w-full h-[calc(100svh-80px)] max-h-[740px] flex-col justify-between py-6">
+          <div className="max-w-site mx-auto px-4 sm:px-6 w-full flex-1 flex flex-col justify-between">
+            {/* Top Bar: Section Title + Direct Scene Jump Selector */}
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-200/80 dark:border-neutral-800/80">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                  Product Walkthrough
+                </span>
+                <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                <span className="text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200">
+                  Step 0{activeScene} of 04
+                </span>
+              </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-neutral-950 dark:text-white">
-            Watch personal software take shape.
-          </h2>
+              {/* Direct Scene Selectors (Keyboard & Click Reachable) */}
+              <div className="flex items-center gap-1.5" role="tablist" aria-label="Walkthrough steps">
+                {SCENES.map((s) => {
+                  const isSelected = activeScene === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      aria-label={`Step ${s.num}: ${s.title}`}
+                      onClick={() => handleSelectScene(s.id)}
+                      className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-xs font-semibold'
+                          : 'bg-neutral-100 dark:bg-neutral-850 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'
+                      }`}
+                    >
+                      {s.num}. {s.title}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
-            Scroll to see how Coreside translates a conversation into an interactive, evolving app inside your workspace.
-          </p>
+            {/* Main 2-Column Split: Single Exclusive Left Text Stage + Right Stable Preview */}
+            <div className="grid grid-cols-12 gap-8 lg:gap-12 items-center flex-1 py-4">
+              {/* Left Column: Bounded Clipped Stage (Strictly Only the Active Scene is Visible) */}
+              <div className="col-span-5 relative h-[380px] overflow-hidden flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeScene}
+                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
+                    transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+                    className="space-y-4"
+                  >
+                    {/* Scene Concept Eyebrow */}
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[11px] font-bold text-neutral-900 dark:text-neutral-100 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+                        {currentScene.num}
+                      </span>
+                      <span className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                        {currentScene.concept}
+                      </span>
+                    </div>
 
-          {/* Quick Scene Selector Buttons for Touch & Keyboard */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-2">
-            {SCENES.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => handleSelectScene(s.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                  activeScene === s.id
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-xs'
-                    : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'
-                }`}
-              >
-                {s.num}. {s.title}
-              </button>
-            ))}
+                    {/* Scene Title */}
+                    <h3 className="text-3xl font-bold tracking-tight text-neutral-950 dark:text-white">
+                      {currentScene.title}
+                    </h3>
+
+                    {/* Scene Caption */}
+                    <p className="text-base font-semibold text-neutral-800 dark:text-neutral-200 leading-snug">
+                      {currentScene.caption}
+                    </p>
+
+                    {/* Explanatory Body Copy */}
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-md">
+                      {currentScene.body}
+                    </p>
+
+                    {/* Feature Bullets */}
+                    <ul className="space-y-2 pt-2 border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-700 dark:text-neutral-300">
+                      {currentScene.featureBullets.map((bullet, bIdx) => (
+                        <li key={bIdx} className="flex items-center gap-2">
+                          <Check className="w-3.5 h-3.5 text-neutral-900 dark:text-neutral-100 shrink-0" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Right Column: Pinned Coreside Desktop Workspace Preview */}
+              <div className="col-span-7 flex flex-col justify-center">
+                <ScrollStoryPreview
+                  activeScene={activeScene}
+                  tasks={tasks}
+                  onToggleTask={handleToggleTask}
+                />
+              </div>
+            </div>
+
+            {/* Bottom Progress Rail */}
+            <div className="pt-3 border-t border-neutral-200/70 dark:border-neutral-800/70 flex items-center justify-between text-xs text-neutral-400 font-mono">
+              <div className="flex items-center gap-1.5 w-48">
+                {SCENES.map((s) => (
+                  <div
+                    key={s.id}
+                    className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                      activeScene >= s.id
+                        ? 'bg-neutral-900 dark:bg-white'
+                        : 'bg-neutral-200 dark:bg-neutral-800'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1 text-[11px]">
+                  <ArrowDown className="w-3 h-3 animate-bounce" />
+                  Scroll to evolve the application
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Desktop Sticky 2-Column Story Grid (Responsive: Stacks on mobile) */}
-        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Narrative Column (approx 42% on desktop) */}
-          <div className="lg:col-span-5 space-y-24 md:space-y-40 py-8 lg:py-16">
-            {SCENES.map((scene, index) => {
-              const isActive = activeScene === scene.id;
+        {/* Mobile & Tablet Layout (Stacked, High-Density Walkthrough) */}
+        <div className="block lg:hidden py-16 px-4 sm:px-6">
+          <div className="max-w-xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="text-center space-y-3">
+              <span className="text-xs font-mono uppercase tracking-wider text-neutral-500">
+                Product Walkthrough
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 dark:text-white">
+                Watch personal software take shape.
+              </h2>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                Step through how Coreside translates a conversational request into an interactive app.
+              </p>
+            </div>
 
-              return (
-                <div
-                  key={scene.id}
-                  ref={(el) => {
-                    sceneRefs.current[index] = el;
-                  }}
-                  className={`transition-opacity duration-300 space-y-5 scroll-mt-36 ${
-                    isActive ? 'opacity-100' : 'opacity-40 hover:opacity-75'
-                  }`}
-                >
-                  {/* Scene Number and Concept Eyebrow */}
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100 px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
-                      Step {scene.num}
-                    </span>
-                    <span className="text-xs font-medium text-neutral-500 uppercase tracking-wider">
-                      {scene.concept}
-                    </span>
-                  </div>
+            {/* Segmented Controls for Mobile */}
+            <div className="flex justify-center">
+              <div className="inline-flex p-1 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 gap-1" role="tablist">
+                {SCENES.map((s) => {
+                  const isSelected = activeScene === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => setActiveScene(s.id)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                        isSelected
+                          ? 'bg-white dark:bg-neutral-800 text-neutral-950 dark:text-white shadow-xs font-semibold'
+                          : 'text-neutral-600 dark:text-neutral-400'
+                      }`}
+                    >
+                      {s.num}. {s.title}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                  {/* Scene Title */}
-                  <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 dark:text-white">
-                    {scene.title}
-                  </h3>
+            {/* Mobile Active Scene Card */}
+            <div className="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 space-y-3 shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-neutral-900 dark:text-neutral-100">
+                  Step {currentScene.num}
+                </span>
+                <span className="text-[11px] font-medium text-neutral-500 uppercase tracking-wider">
+                  {currentScene.concept}
+                </span>
+              </div>
 
-                  {/* Scene Caption */}
-                  <p className="text-base sm:text-lg font-medium text-neutral-800 dark:text-neutral-200 leading-snug">
-                    {scene.caption}
-                  </p>
+              <h3 className="text-xl font-bold text-neutral-950 dark:text-white">
+                {currentScene.title}
+              </h3>
 
-                  {/* Explanatory Body Copy */}
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
-                    {scene.body}
-                  </p>
+              <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                {currentScene.caption}
+              </p>
 
-                  {/* Feature Bullets */}
-                  <ul className="space-y-2 pt-2 border-t border-neutral-200 dark:border-neutral-800 text-xs text-neutral-700 dark:text-neutral-300">
-                    {scene.featureBullets.map((bullet, bIdx) => (
-                      <li key={bIdx} className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-neutral-900 dark:text-neutral-100 shrink-0" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                {currentScene.body}
+              </p>
 
-                  {/* Mobile-only Preview Panel shown directly beneath the scene on small screens */}
-                  <div className="block lg:hidden pt-4">
-                    <ScrollStoryPreview
-                      activeScene={scene.id}
-                      tasks={tasks}
-                      onToggleTask={handleToggleTask}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+              <ul className="space-y-1.5 pt-2 border-t border-neutral-100 dark:border-neutral-800 text-xs text-neutral-600 dark:text-neutral-300">
+                {currentScene.featureBullets.map((bullet, idx) => (
+                  <li key={idx} className="flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 text-neutral-900 dark:text-neutral-100 shrink-0" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Right Sticky Column (approx 58% on desktop, hidden on small screens because mobile renders inline) */}
-          <div className="hidden lg:block lg:col-span-7 sticky top-24 pt-4 pb-12 self-start">
+            {/* Single Interactive Preview */}
             <ScrollStoryPreview
               activeScene={activeScene}
               tasks={tasks}
               onToggleTask={handleToggleTask}
             />
-
-            {/* Scroll hint helper under preview */}
-            <div className="mt-3 flex items-center justify-between text-xs text-neutral-400 font-mono px-2">
-              <span className="flex items-center gap-1.5">
-                <ArrowDown className="w-3 h-3 animate-bounce" />
-                Scroll to progress through scenes
-              </span>
-              <span>Step {activeScene} of 4</span>
-            </div>
           </div>
         </div>
       </div>

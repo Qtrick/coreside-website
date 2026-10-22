@@ -8,19 +8,19 @@ export const TrustAndControl: React.FC = () => {
       icon: CheckSquare,
       title: 'See what changes before you apply them',
       description:
-        'Coreside presents structured change proposals that outline what will be added and what existing data will be preserved, giving you complete approval control.',
+        'Coreside presents clear change proposals that outline what will be added and what existing data will be preserved, giving you complete approval control.',
     },
     {
       icon: Shield,
-      title: 'Declarative component safety',
+      title: 'Safe, structured app construction',
       description:
-        'Personal apps are assembled from a strict registry of declarative components. The system avoids executing arbitrary, unverified code inside your trusted shell.',
+        'Personal apps are assembled from validated, structured components rather than arbitrary unverified scripts, keeping your desktop workspace fast and stable.',
     },
     {
       icon: HardDrive,
-      title: 'Local persistence on your computer',
+      title: 'Your data stays on your machine',
       description:
-        'Your conversations, customized apps, and task records are saved locally in SQLite on your desktop, keeping your day-to-day workspace under your own control.',
+        'Your conversations, customized apps, and records are stored locally on your desktop in SQLite, keeping your day-to-day workspace under your own control.',
     },
     {
       icon: Sliders,

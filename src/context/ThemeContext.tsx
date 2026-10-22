@@ -14,12 +14,13 @@ const STORAGE_KEY = 'coreside-theme';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [themePreference, setThemePreferenceState] = useState<ThemePreference>(() => {
-    if (typeof window === 'undefined') return 'system';
+    if (typeof window === 'undefined') return 'light';
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'light' || stored === 'dark' || stored === 'system') {
       return stored;
     }
-    return 'system';
+    // Deliberate brand choice: default to light mode for first-time visitors
+    return 'light';
   });
 
   const [systemIsDark, setSystemIsDark] = useState<boolean>(() => {
@@ -89,7 +90,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+    return {
+      themePreference: isDark ? 'dark' : 'light',
+      resolvedTheme: isDark ? 'dark' : 'light',
+      setThemePreference: () => {},
+      toggleTheme: () => {},
+    };
   }
   return context;
 };

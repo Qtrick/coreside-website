@@ -26,6 +26,31 @@ if (typeof window !== 'undefined' && window.HTMLElement) {
   window.HTMLElement.prototype.scrollIntoView = vi.fn();
 }
 
+// Mock HTMLCanvasElement.prototype.getContext for HeroDotField in JSDOM
+if (typeof window !== 'undefined' && window.HTMLCanvasElement) {
+  window.HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+    clearRect: vi.fn(),
+    fillRect: vi.fn(),
+    beginPath: vi.fn(),
+    arc: vi.fn(),
+    fill: vi.fn(),
+    setTransform: vi.fn(),
+    scale: vi.fn(),
+  })) as any;
+}
+
+// Mock ResizeObserver
+class MockResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+Object.defineProperty(window, 'ResizeObserver', {
+  writable: true,
+  configurable: true,
+  value: MockResizeObserver,
+});
+
 // Mock IntersectionObserver
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Element | Document | null = null;

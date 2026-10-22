@@ -12,6 +12,7 @@ import { WhoItsFor } from '@/components/WhoItsFor';
 import { FAQ } from '@/components/FAQ';
 import { WaitlistSection } from '@/components/WaitlistSection';
 import { Footer } from '@/components/Footer';
+import { SiteAmbientBackground } from '@/components/site/SiteAmbientBackground';
 import { PrivacyPage } from '@/pages/PrivacyPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
@@ -54,19 +55,22 @@ export const App: React.FC = () => {
       {currentPath === '/privacy' ? (
         <PrivacyPage />
       ) : currentPath === '/' ? (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen relative">
           <Header />
           <main id="main-content" className="flex-1">
             <Hero />
-            <WhyCoreside />
-            <ScrollStory />
-            <ExampleApps />
-            <PersistenceStory />
-            <Personalization />
-            <TrustAndControl />
-            <WhoItsFor />
-            <FAQ />
-            <WaitlistSection />
+            <div className="relative">
+              <SiteAmbientBackground />
+              <WhyCoreside />
+              <ScrollStory />
+              <ExampleApps />
+              <PersistenceStory />
+              <Personalization />
+              <TrustAndControl />
+              <WhoItsFor />
+              <FAQ />
+              <WaitlistSection />
+            </div>
           </main>
           <Footer />
         </div>

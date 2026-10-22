@@ -99,7 +99,7 @@ export const ScrollStoryPreview: React.FC<ScrollStoryPreviewProps> = ({
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
                     Proposal Ready
                   </span>
-                  <span className="text-[10px] font-mono text-neutral-500">Risk: Low</span>
+                  <span className="text-[10px] font-mono text-neutral-500">Structured preview</span>
                 </div>
                 <p className="font-semibold text-neutral-900 dark:text-neutral-100">
                   Create Study Planner App

@@ -4,6 +4,8 @@ import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'mo
 import { WaitlistForm } from './WaitlistForm';
 import { motionTokens } from '@/lib/motion-tokens';
 
+import { HeroDotField } from '@/components/site/HeroDotField';
+
 interface TaskItem {
   id: string;
   title: string;
@@ -58,10 +60,11 @@ export const Hero: React.FC = () => {
   const progressPercent = Math.round((completedCount / tasks.length) * 100);
 
   return (
-    <section ref={containerRef} className="relative pt-10 pb-20 md:pt-18 md:pb-28 overflow-hidden">
-      {/* Background radial spotlight */}
+    <section ref={containerRef} className="relative pt-10 pb-20 md:pt-16 md:pb-24 overflow-hidden">
+      {/* Restrained Interactive Dot Field with Proximity & Ambient Wave */}
+      <HeroDotField />
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] bg-neutral-200/35 dark:bg-neutral-800/12 rounded-full blur-3xl pointer-events-none -z-10"
+        className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white dark:from-neutral-950 to-transparent pointer-events-none -z-10"
         aria-hidden="true"
       />
 
@@ -191,7 +194,7 @@ export const Hero: React.FC = () => {
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
                         {step === 1 ? 'Generating plan...' : 'Proposal Ready'}
                       </span>
-                      <span className="text-[10px] font-mono text-neutral-400">Risk: Low</span>
+                      <span className="text-[10px] font-mono text-neutral-400">Structured preview</span>
                     </div>
 
                     <div>
