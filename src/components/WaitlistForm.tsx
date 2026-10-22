@@ -150,7 +150,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium text-sm bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-100 transition-all shrink-0 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+          className="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-medium text-sm bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-100 transition-all duration-150 shrink-0 shadow-xs hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
         >
           {status === 'submitting' ? (
             <>
@@ -160,7 +160,7 @@ export const WaitlistForm: React.FC<WaitlistFormProps> = ({
           ) : (
             <>
               <span>Join the waitlist</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" />
             </>
           )}
         </button>

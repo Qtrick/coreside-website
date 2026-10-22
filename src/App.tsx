@@ -3,7 +3,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { WhyCoreside } from '@/components/WhyCoreside';
-import { HowItWorks } from '@/components/HowItWorks';
+import { ScrollStory } from '@/components/site/ScrollStory';
 import { ExampleApps } from '@/components/ExampleApps';
 import { PersistenceStory } from '@/components/PersistenceStory';
 import { Personalization } from '@/components/Personalization';
@@ -59,7 +59,7 @@ export const App: React.FC = () => {
           <main id="main-content" className="flex-1">
             <Hero />
             <WhyCoreside />
-            <HowItWorks />
+            <ScrollStory />
             <ExampleApps />
             <PersistenceStory />
             <Personalization />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { WaitlistForm } from './WaitlistForm';
+import { Reveal } from '@/components/site/Reveal';
 
 export const WaitlistSection: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ export const WaitlistSection: React.FC = () => {
       />
 
       <div className="max-w-site mx-auto px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-6">
+        <Reveal className="max-w-2xl mx-auto text-center space-y-6">
           <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
             Early Access
           </p>
@@ -30,7 +31,7 @@ export const WaitlistSection: React.FC = () => {
               Zero spam. Your email will be stored safely and used only for Coreside access updates.
             </p>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

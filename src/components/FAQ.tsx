@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { Reveal } from '@/components/site/Reveal';
 import type { FAQItem } from '@/types';
+import { motionTokens } from '@/lib/motion-tokens';
 
 export const FAQ: React.FC = () => {
   const [openId, setOpenId] = useState<string | null>('faq-1');
+  const shouldReduceMotion = useReducedMotion();
 
   const faqs: FAQItem[] = [
     {
@@ -75,7 +79,7 @@ export const FAQ: React.FC = () => {
   return (
     <section id="faq" className="py-20 md:py-28 border-t border-neutral-200 dark:border-neutral-850 scroll-mt-16">
       <div className="max-w-site mx-auto px-4 sm:px-6">
-        <div className="max-w-2xl mx-auto text-center space-y-4 mb-16">
+        <Reveal className="max-w-2xl mx-auto text-center space-y-4 mb-16">
           <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
             Frequently Asked Questions
           </p>
@@ -85,49 +89,58 @@ export const FAQ: React.FC = () => {
           <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed">
             Everything you need to know about the product, architecture, and early-access rollout.
           </p>
-        </div>
+        </Reveal>
 
         {/* Accordion container */}
         <div className="max-w-3xl mx-auto space-y-3">
-          {faqs.map((faq) => {
+          {faqs.map((faq, idx) => {
             const isOpen = openId === faq.id;
             const contentId = `${faq.id}-content`;
             const headerId = `${faq.id}-header`;
 
             return (
-              <div
-                key={faq.id}
-                className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 overflow-hidden transition-colors"
-              >
-                <button
-                  type="button"
-                  id={headerId}
-                  aria-expanded={isOpen}
-                  aria-controls={contentId}
-                  onClick={() => toggleItem(faq.id)}
-                  className="w-full py-4.5 px-6 flex items-center justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer"
-                >
-                  <span className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100 pr-4">
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-neutral-500 transition-transform duration-200 shrink-0 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {isOpen && (
-                  <div
-                    id={contentId}
-                    role="region"
-                    aria-labelledby={headerId}
-                    className="px-6 pb-5 pt-1 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed border-t border-neutral-100 dark:border-neutral-850 animate-fadeIn"
+              <Reveal key={faq.id} delay={idx * 0.03}>
+                <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900/60 overflow-hidden transition-colors shadow-2xs">
+                  <button
+                    type="button"
+                    id={headerId}
+                    aria-expanded={isOpen}
+                    aria-controls={contentId}
+                    onClick={() => toggleItem(faq.id)}
+                    className="w-full py-4.5 px-6 flex items-center justify-between text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 cursor-pointer"
                   >
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
+                    <span className="text-sm sm:text-base font-semibold text-neutral-900 dark:text-neutral-100 pr-4">
+                      {faq.question}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: motionTokens.duration.fast }}
+                      className="shrink-0"
+                    >
+                      <ChevronDown className="w-4 h-4 text-neutral-500" />
+                    </motion.div>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={contentId}
+                        role="region"
+                        aria-labelledby={headerId}
+                        initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                        transition={{ duration: motionTokens.duration.fast, ease: motionTokens.easing.smooth }}
+                        className="overflow-hidden border-t border-neutral-100 dark:border-neutral-850"
+                      >
+                        <div className="px-6 pb-5 pt-3 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </Reveal>
             );
           })}
         </div>

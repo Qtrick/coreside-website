@@ -40,9 +40,9 @@ describe('Header Component', () => {
     );
 
     expect(screen.getByText('Coreside')).toBeInTheDocument();
-    expect(screen.getByText('Product')).toBeInTheDocument();
-    expect(screen.getByText('How it works')).toBeInTheDocument();
+    expect(screen.getByText('Walkthrough')).toBeInTheDocument();
     expect(screen.getByText('Examples')).toBeInTheDocument();
+    expect(screen.getByText('Continuity')).toBeInTheDocument();
     expect(screen.getByText('FAQ')).toBeInTheDocument();
   });
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Check, Sparkles, ChevronRight } from 'lucide-react';
+import { motion, useScroll, useTransform, useInView, useReducedMotion } from 'motion/react';
 import { WaitlistForm } from './WaitlistForm';
+import { motionTokens } from '@/lib/motion-tokens';
 
 interface TaskItem {
   id: string;
@@ -17,30 +19,34 @@ const INITIAL_TASKS: TaskItem[] = [
 ];
 
 export const Hero: React.FC = () => {
-  // Step 1: Initial conversation request
-  // Step 2: Change proposal generated
-  // Step 3: First app applied and running
-  // Step 4: Follow-up prompt and evolved app with preserved tasks
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false); // Manual / respectful autoplay
   const [tasks, setTasks] = useState<TaskItem[]>(INITIAL_TASKS);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-advance demo when playing
+  const containerRef = useRef<HTMLDivElement>(null);
+  const windowRef = useRef<HTMLDivElement>(null);
+  const isHeroInView = useInView(windowRef, { margin: '0px 0px -20% 0px' });
+  const shouldReduceMotion = useReducedMotion();
+
+  // Scroll-linked depth transform on desktop window
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const previewY = useTransform(scrollYProgress, [0, 1], [0, -22]);
+  const previewScale = useTransform(scrollYProgress, [0, 1], [1, 0.985]);
+
+  // Autoplay pause when scrolled out of view
   useEffect(() => {
-    if (!isPlaying) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      return;
-    }
+    if (!isPlaying || !isHeroInView || shouldReduceMotion) return;
 
-    timerRef.current = setInterval(() => {
+    const timer = setInterval(() => {
       setStep((prev) => (prev < 4 ? ((prev + 1) as 1 | 2 | 3 | 4) : 1));
-    }, 4200);
+    }, 4500);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isPlaying]);
+    return () => clearInterval(timer);
+  }, [isPlaying, isHeroInView, shouldReduceMotion]);
 
   const toggleTask = (id: string) => {
     setTasks((prev) =>
@@ -52,43 +58,71 @@ export const Hero: React.FC = () => {
   const progressPercent = Math.round((completedCount / tasks.length) * 100);
 
   return (
-    <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
-      {/* Background radial gradient spotlight */}
+    <section ref={containerRef} className="relative pt-10 pb-20 md:pt-18 md:pb-28 overflow-hidden">
+      {/* Background radial spotlight */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-neutral-200/40 dark:bg-neutral-800/15 rounded-full blur-3xl pointer-events-none -z-10"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] bg-neutral-200/35 dark:bg-neutral-800/12 rounded-full blur-3xl pointer-events-none -z-10"
         aria-hidden="true"
       />
 
       <div className="max-w-site mx-auto px-4 sm:px-6">
-        {/* Hero Copy & Value Proposition */}
+        {/* Hero Copy & Value Proposition with Choreographed Entrance */}
         <div className="max-w-3xl mx-auto text-center space-y-6 mb-12 md:mb-16">
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-200 text-xs font-medium tracking-wide uppercase">
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: motionTokens.duration.normal, delay: 0.05 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-300 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/80 text-neutral-800 dark:text-neutral-200 text-xs font-medium tracking-wide uppercase"
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-neutral-900 dark:bg-neutral-100" />
             <span>Personal software, reimagined</span>
-          </div>
+          </motion.div>
 
           {/* Headline H1 */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-neutral-950 dark:text-white leading-[1.08]">
+          <motion.h1
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: motionTokens.duration.moderate, delay: 0.12 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-neutral-950 dark:text-white leading-[1.08]"
+          >
             Software that takes shape around you.
-          </h1>
+          </motion.h1>
 
           {/* Subhead */}
-          <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed max-w-2xl mx-auto">
+          <motion.p
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: motionTokens.duration.moderate, delay: 0.22 }}
+            className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 font-normal leading-relaxed max-w-2xl mx-auto"
+          >
             Tell Coreside what you need. Build personal apps right inside your workspace, then keep changing them as your needs change.
-          </p>
+          </motion.p>
 
           {/* Waitlist Form Component */}
-          <div className="pt-2 flex flex-col items-center">
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: motionTokens.duration.normal, delay: 0.32 }}
+            className="pt-2 flex flex-col items-center"
+          >
             <WaitlistForm source="hero" idPrefix="hero" className="mx-auto" />
             <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-500">
               Early access is coming. Join the waitlist for updates.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Hero Product Narrative: Desktop Window Simulation */}
-        <div id="hero-demo" className="scroll-mt-24 max-w-5xl mx-auto">
+        <motion.div
+          id="hero-demo"
+          ref={windowRef}
+          style={shouldReduceMotion ? {} : { y: previewY, scale: previewScale }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: motionTokens.duration.slow, delay: 0.4, ease: motionTokens.easing.smooth }}
+          className="scroll-mt-24 max-w-5xl mx-auto"
+        >
           <div className="rounded-2xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xl overflow-hidden transition-all">
             {/* Window Title Bar */}
             <div className="h-11 px-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/60 flex items-center justify-between">
@@ -116,7 +150,7 @@ export const Hero: React.FC = () => {
                     type="button"
                     onClick={() => setIsPlaying(!isPlaying)}
                     aria-label={isPlaying ? 'Pause demonstration' : 'Play demonstration'}
-                    className="p-1 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+                    className="p-1 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 cursor-pointer"
                   >
                     {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                   </button>
@@ -124,10 +158,10 @@ export const Hero: React.FC = () => {
                     type="button"
                     onClick={() => {
                       setStep(1);
-                      setIsPlaying(true);
+                      setIsPlaying(false);
                     }}
                     aria-label="Replay demonstration from start"
-                    className="p-1 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+                    className="p-1 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 cursor-pointer"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
@@ -144,14 +178,14 @@ export const Hero: React.FC = () => {
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
                       <span>You</span>
-                      <span>Just now</span>
+                      <span>Turn 1</span>
                     </div>
-                    <div className="p-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 shadow-2xs">
+                    <div className="p-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 shadow-2xs font-medium">
                       Make me a study planner for this semester.
                     </div>
                   </div>
 
-                  {/* Coreside Change Proposal Card (matches Coreside ChangeProposalCard.tsx) */}
+                  {/* Coreside Change Proposal Card */}
                   <div className="p-3.5 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900/90 space-y-2.5 text-xs shadow-xs">
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
@@ -178,7 +212,7 @@ export const Hero: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setStep(3)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                           step >= 3
                             ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500 cursor-default'
                             : 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 hover:opacity-90'
@@ -194,7 +228,7 @@ export const Hero: React.FC = () => {
                     <div className="space-y-3 pt-2 border-t border-neutral-200 dark:border-neutral-800 animate-fadeIn">
                       <div className="space-y-1">
                         <div className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500">You</div>
-                        <div className="p-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100">
+                        <div className="p-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs sm:text-sm text-neutral-900 dark:text-neutral-100 font-medium">
                           Add priorities and a progress summary.
                         </div>
                       </div>
@@ -247,7 +281,7 @@ export const Hero: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Progress Summary: Appears in evolved Step 4 (or always interactive) */}
+                  {/* Progress Summary: Appears in evolved Step 4 */}
                   <div className="mt-5 p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/50 space-y-2">
                     <div className="flex items-center justify-between text-xs font-medium text-neutral-700 dark:text-neutral-300">
                       <span>Progress Summary</span>
@@ -311,7 +345,7 @@ export const Hero: React.FC = () => {
                               {task.subject}
                             </span>
 
-                            {/* Contained Priority Badge (in evolved step 4) */}
+                            {/* Contained Priority Badge */}
                             {task.priority && (
                               <span
                                 className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
@@ -359,7 +393,7 @@ export const Hero: React.FC = () => {
                   setStep(s.id as 1 | 2 | 3 | 4);
                   setIsPlaying(false);
                 }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
                   step === s.id
                     ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-xs'
                     : 'bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-800'
@@ -369,7 +403,7 @@ export const Hero: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

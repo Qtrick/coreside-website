@@ -31,28 +31,28 @@ describe('Hero Interactive Demonstration', () => {
 });
 
 describe('ExampleApps Component', () => {
-  it('switches tabs between Study Planner, Habit Tracker, and Quiz', () => {
+  it('switches tabs between Study Planner, Habit Tracker, and Quiz', async () => {
     render(<ExampleApps />);
 
     // Initially on Study Planner
     expect(screen.getByText(/Fall Semester Planner/i)).toBeInTheDocument();
 
     // Switch to Habit Tracker
-    fireEvent.click(screen.getByRole('button', { name: /habit tracker/i }));
-    expect(screen.getByText(/Daily Discipline Ledger/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /habit tracker/i }));
+    expect(await screen.findByText(/Daily Discipline Ledger/i)).toBeInTheDocument();
 
     // Switch to Quiz
-    fireEvent.click(screen.getByRole('button', { name: /interactive quiz & checklist/i }));
-    expect(screen.getByText(/Where do Coreside apps run\?/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /interactive quiz & checklist/i }));
+    expect(await screen.findByText(/Where do Coreside apps run\?/i)).toBeInTheDocument();
   });
 
-  it('evaluates quiz choices interactively and provides feedback', () => {
+  it('evaluates quiz choices interactively and provides feedback', async () => {
     render(<ExampleApps />);
-    fireEvent.click(screen.getByRole('button', { name: /interactive quiz & checklist/i }));
+    fireEvent.click(screen.getByRole('tab', { name: /interactive quiz & checklist/i }));
 
-    const correctChoice = screen.getByText(/locally on your desktop, rendered from declarative validated components/i);
+    const correctChoice = await screen.findByText(/locally on your desktop, rendered from declarative validated components/i);
     fireEvent.click(correctChoice);
 
-    expect(screen.getByText(/✓ Correct/i)).toBeInTheDocument();
+    expect(await screen.findByText(/✓ Correct/i)).toBeInTheDocument();
   });
 });
